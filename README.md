@@ -40,7 +40,7 @@ Setiap eksperimen punya **jurnal** — catatan prediksi yang disimpan di `localS
 - **Hash routing** (`#/galton`, `#/koin`, …) — tanpa dependency router tambahan, tetap bisa di-*share*.
 - **Tailwind CSS v4** dengan design token `@theme` (paper, ink, ultramarine, vermilion, sun, pastel wash).
 - **Font self-hosted lewat `next/font`** — tidak ada request ke Google Fonts saat runtime.
-- **Vercel Speed Insights** untuk memantau Core Web Vitals (lihat bagian [Monitoring](#monitoring-vercel-speed-insights)).
+- **Vercel Speed Insights** untuk memantau Core Web Vitals (lihat bagian [Monitoring](#monitoring)).
 - **Aksesibel tanpa JS**: intro gate otomatis disembunyikan jika JavaScript mati.
 
 ---
@@ -142,20 +142,33 @@ vercel --prod # produksi
 
 ---
 
-## Monitoring (Vercel Speed Insights)
+## Monitoring
 
-Monitoring performa memakai [Vercel Speed Insights](https://vercel.com/docs/speed-insights): metrik Core Web Vitals
-(**LCP, INP, CLS**) plus **FCP** dan **TTFB** dari pengunjung asli, bukan sintetis.
+Dua alat observability Vercel aktif dan berjalan otomatis di deployment Vercel — tanpa env var, tanpa token.
 
-- Paket: `@vercel/speed-insights` — komponen `<SpeedInsights />` dipasang di [src/app/layout.tsx](src/app/layout.tsx).
-- **Aktif otomatis** di deployment Vercel; script-nya disajikan platform di `/_vercel/speed-insights/script.js`.
-- Data muncul ±30 detik setelah kunjungan pertama. Lihat: dashboard Vercel → project → tab **Speed Insights**.
-- Kuota gratis (plan Hobby): **10.000 event / 30 hari terakhir**, dipakai bersama seluruh tim.
-- Di lokal (`npm run dev` / `npm start`) script itu memang 404 dan memunculkan satu pesan di console —
+| Alat | Paket | Komponen | Yang diukur | Tab dashboard |
+|------|-------|----------|-------------|---------------|
+| **Vercel Analytics** | `@vercel/analytics` | `<Analytics />` | jumlah pengunjung, pageview, referrer, negara, device | **Analytics** |
+| **Vercel Speed Insights** | `@vercel/speed-insights` | `<SpeedInsights />` | Core Web Vitals: LCP, INP, CLS + FCP, TTFB | **Speed Insights** |
+
+Keduanya dipasang di [src/app/layout.tsx](src/app/layout.tsx); script disajikan platform dari
+`/_vercel/insights/script.js` dan `/_vercel/speed-insights/script.js`.
+
+Catatan operasional:
+
+- **Aktif otomatis** di deployment Vercel: script disajikan platform, bukan dari folder `public/`.
+- Kalau tab dashboard menampilkan tombol **Enable**, klik sekali untuk mengaktifkan (gratis di plan Hobby).
+- Data muncul ±30 detik setelah kunjungan pertama; refresh tab **Analytics** / **Speed Insights**.
+- Kuota gratis (plan Hobby): Analytics **50.000 event/bulan**, Speed Insights **10.000 event/30 hari terakhir**
+  — dipakai bersama seluruh tim.
+- Di lokal (`npm run dev` / `npm start`) kedua script memang 404 dan memunculkan pesan di console —
   itu normal dan tidak memengaruhi build maupun performa.
 
 > Catatan: PROBLAB memakai hash routing (`#/galton`, `#/koin`, …), jadi seluruh eksperimen terhitung
 > sebagai satu route `/`. Yang diukur adalah performa halaman itu sendiri, bukan per eksperimen.
+>
+> Kalau nanti ingin melacak per eksperimen, Vercel Analytics mendukung `mode="manual"` + `track()` —
+> cukup beberapa baris di router [App.tsx](src/components/problab/App.tsx).
 
 ---
 

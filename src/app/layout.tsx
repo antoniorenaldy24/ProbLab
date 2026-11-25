@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import IntroGate from "@/components/problab/IntroGate";
 
@@ -82,7 +83,9 @@ export default function RootLayout({
         </noscript>
         <IntroGate />
         {children}
-        {/* Core Web Vitals dikirim ke dashboard Vercel (aktif otomatis di deployment Vercel) */}
+        {/* Kunjungan (pageview) + Core Web Vitals dikirim ke dashboard Vercel.
+            Keduanya aktif otomatis di deployment Vercel. */}
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>

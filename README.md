@@ -116,4 +116,4 @@ problab/
 ```
 ## Lisensi
 
-[MIT](LICENSE) © 2026 PROBLAB
+[MIT](LICENSE) © 2026 Renaldy Antonio

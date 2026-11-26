@@ -11,8 +11,8 @@ Belajar dengan menjelajah, paham dengan mencoba — delapan alat probabilitas in
 
 | | |
 |---|---|
-| **Live** | _belum dideploy — tambahkan URL Vercel-mu di sini_ |
-| **Repo** | _tambahkan URL GitHub-mu di sini_ |
+| **Live** | https://prob-lab-seven.vercel.app/ |
+| **Repo** | https://github.com/antoniorenaldy24/ProbLab.git |
 
 ---
 
